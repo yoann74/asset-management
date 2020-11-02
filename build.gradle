@@ -1,0 +1,28 @@
+plugins {
+    id 'java-library'
+    id 'application'
+}
+
+group 'asset.management'
+version '1.0-SNAPSHOT'
+
+repositories {
+    //jcenter()
+    mavenCentral()
+    mavenLocal()
+}
+dependencies {
+    api 'com.typesafe.akka:akka-actor-typed_2.13:2.6.10'
+    api 'ch.qos.logback:logback-classic:1.2.3'
+
+    // Use JUnit test framework
+    testImplementation 'com.typesafe.akka:akka-actor-testkit-typed_2.13:2.6.10'
+    testImplementation 'junit:junit:4.12'
+    //  compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.29'
+}
+
+mainClassName = "asset.management.AssetManagementStart"
+
+run {
+    standardInput = System.in
+}
