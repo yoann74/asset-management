@@ -1,0 +1,6 @@
+[2020-11-03 22:40:00,119] [INFO] [asset.management.Asset] [asset-management-akka.actor.default-dispatcher-5] [akka://asset-management/user/youth_saving] - Asset youth_saving created with an initial amount of 20.0
+[2020-11-03 22:40:00,122] [INFO] [asset.management.Asset] [asset-management-akka.actor.default-dispatcher-5] [akka://asset-management/user/youth_saving] - Transaction of 50.0 from Arthur on youth_saving
+[2020-11-03 22:40:00,122] [INFO] [asset.management.Asset] [asset-management-akka.actor.default-dispatcher-5] [akka://asset-management/user/youth_saving] - new balance is 70.0
+[2020-11-03 22:40:00,118] [INFO] [asset.management.Asset] [asset-management-akka.actor.default-dispatcher-7] [akka://asset-management/user/saving] - Asset saving created with an initial amount of 20.0
+[2020-11-03 22:40:00,125] [INFO] [asset.management.Asset] [asset-management-akka.actor.default-dispatcher-7] [akka://asset-management/user/saving] - Transaction of 30.0 from Sylvain on saving
+[2020-11-03 22:40:00,125] [INFO] [asset.management.Asset] [asset-management-akka.actor.default-dispatcher-7] [akka://asset-management/user/saving] - new balance is 50.0

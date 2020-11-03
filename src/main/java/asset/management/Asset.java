@@ -6,9 +6,7 @@ import akka.actor.typed.javadsl.*;
 public class Asset extends AbstractBehavior<Asset.Transaction> {
 
     private Asset(ActorContext<Transaction> context, double initialBalance, double interest) {
-        //private Asset(TimerScheduler<Transaction> timers, ActorContext<Transaction> context, double initialBalance, double interest) {
         super(context);
-        //this.timers = timers;
         this.balance = initialBalance;
         this.interest = interest;
         getContext().getLog().info("Asset {} created with an initial amount of {}", getContext().getSelf().path().name(), initialBalance);
@@ -16,12 +14,7 @@ public class Asset extends AbstractBehavior<Asset.Transaction> {
 
     private double balance;
     private double interest;
-    //private final TimerScheduler<Transaction> timers;
 
-
-    public static final class CalculateInterests {
-
-    }
     public static final class Transaction {
         public final String whom;
         public final double amount;
@@ -35,34 +28,11 @@ public class Asset extends AbstractBehavior<Asset.Transaction> {
     public static Behavior<Transaction> create(double initial, double interest) {
         return Behaviors.setup(
                 context ->
-
-                                        new Asset(//timers,
-                                                context,
-                                                initial,
-                                                interest));
+                        new Asset(
+                                context,
+                                initial,
+                                interest));
     }
-    /*public static Behavior<Transaction> create(double initial, double interest) {
-        return Behaviors.setup(
-                context ->
-                        Behaviors.withTimers(
-                                timers ->
-                                        new Asset(timers,
-                                                context,
-                                                initial,
-                                                interest)));
-    }
-
-    public Behavior<CalculateInterests> onCalculateInterests(CalculateInterests msg) {
-        timers.startTimerWithFixedDelay();
-        return Behaviors.setup(
-                context ->
-                        Behaviors.withTimers(
-                                timers ->
-                                        new Asset(timers,
-                                                context,
-                                                initial,
-                                                interest)));
-    }*/
 
     @Override
     public Receive<Transaction> createReceive() {
