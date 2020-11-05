@@ -5,6 +5,25 @@ import akka.actor.typed.javadsl.*;
 
 public class Asset extends AbstractBehavior<Asset.Transaction> {
 
+    interface Transaction {
+    }
+
+    public static class Deposit implements Transaction {
+        public final double amount;
+
+        public Deposit(double amount) {
+            this.amount = amount;
+        }
+    }
+
+    public static class Withdraw implements Transaction {
+        public final double amount;
+
+        public Withdraw(double amount) {
+            this.amount = amount;
+        }
+    }
+
     private Asset(ActorContext<Transaction> context, double initialBalance, double interest) {
         super(context);
         this.balance = initialBalance;
@@ -14,16 +33,6 @@ public class Asset extends AbstractBehavior<Asset.Transaction> {
 
     private double balance;
     private double interest;
-
-    public static final class Transaction {
-        public final String whom;
-        public final double amount;
-
-        public Transaction(String whom, double amount) {
-            this.whom = whom;
-            this.amount = amount;
-        }
-    }
 
     public static Behavior<Transaction> create(double initial, double interest) {
         return Behaviors.setup(
@@ -36,12 +45,21 @@ public class Asset extends AbstractBehavior<Asset.Transaction> {
 
     @Override
     public Receive<Transaction> createReceive() {
-        return newReceiveBuilder().onMessage(Transaction.class, this::onTransaction).build();
+        return newReceiveBuilder().onMessage(Deposit.class, this::onDeposit)
+                                    .onMessage(Withdraw.class, this::onWithdraw)
+                                    .build();
     }
 
-    private Behavior<Transaction> onTransaction(Transaction command){
-        getContext().getLog().info("Transaction of {} from {} on {}", command.amount, command.whom, getContext().getSelf().path().name());
+    private Behavior<Transaction> onDeposit(Deposit command){
+        getContext().getLog().info("Deposit of {} from {}", command.amount, getContext().getSelf().path().name());
         balance += command.amount;
+        getContext().getLog().info("new balance is {}", balance);
+        return this;
+    }
+
+    private Behavior<Transaction> onWithdraw(Withdraw command){
+        getContext().getLog().info("Withdrawal of {} from {}", command.amount, getContext().getSelf().path().name());
+        balance -= command.amount;
         getContext().getLog().info("new balance is {}", balance);
         return this;
     }
