@@ -8,6 +8,10 @@ public class Asset extends AbstractBehavior<Asset.Transaction> {
     interface Transaction {
     }
 
+    public enum PrintBalance implements Transaction{
+        INSTANCE
+    }
+
     public static class Deposit implements Transaction {
         public final double amount;
 
@@ -45,9 +49,15 @@ public class Asset extends AbstractBehavior<Asset.Transaction> {
 
     @Override
     public Receive<Transaction> createReceive() {
-        return newReceiveBuilder().onMessage(Deposit.class, this::onDeposit)
+        return newReceiveBuilder().onMessageEquals(PrintBalance.INSTANCE, this::onPrintBalance)
+                                    .onMessage(Deposit.class, this::onDeposit)
                                     .onMessage(Withdraw.class, this::onWithdraw)
                                     .build();
+    }
+
+    private Behavior<Transaction> onPrintBalance() {
+        System.out.println("current balance is " + balance);
+        return this;
     }
 
     private Behavior<Transaction> onDeposit(Deposit command){
@@ -63,4 +73,6 @@ public class Asset extends AbstractBehavior<Asset.Transaction> {
         getContext().getLog().info("new balance is {}", balance);
         return this;
     }
+
+
 }
